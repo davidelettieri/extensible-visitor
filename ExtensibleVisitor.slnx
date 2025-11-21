@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="Approaches.Functional/Approaches.Functional.fsproj" />
+  <Project Path="Approaches.Tests/Approaches.Tests.csproj" />
   <Project Path="Approaches/Approaches.csproj" />
 </Solution>

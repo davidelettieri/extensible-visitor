@@ -8,12 +8,12 @@ public sealed record Square(double Length) : IShape;
 
 public sealed record Circle(double Radius) : IShape;
 
+public sealed record TranslatedShape(IShape Shape, Point Point) : IShape;
+
 /// <summary>
 /// This type is added later
 /// </summary>
-/// <param name="Shape"></param>
-/// <param name="Point"></param>
-public sealed record TranslatedShape(IShape Shape, Point Point) : IShape;
+public sealed record UnionShape(IShape Shape1, IShape Shape2) : IShape;
 
 public static class Tools
 {
@@ -35,9 +35,19 @@ public static class Tools
         {
             Square s => new Square(s.Length / num),
             Circle c => new Circle(c.Radius * num),
-            TranslatedShape ts => ts with { Shape = Shrink(num, ts.Shape) },
             _ => throw new NotSupportedException($"Shape of type {shape.GetType().Name} is not supported")
         };
 
-    // We cannot add any new shape without modifying existing code
+    // New ContainsPoint that supports UnionShape
+    public static bool ContainsPointV2(Point point, IShape shape) =>
+        shape switch
+        {
+            Square s => ContainsPoint(point, s),
+            Circle c => ContainsPoint(point, c),
+            TranslatedShape ts => ContainsPointV2(
+                new Point(point.X - ts.Point.X, point.Y - ts.Point.Y),
+                ts.Shape),
+            UnionShape s => ContainsPointV2(point, s.Shape1) || ContainsPointV2(point, s.Shape2),
+            _ => throw new NotSupportedException($"Shape of type {shape.GetType().Name} is not supported")
+        };
 }
