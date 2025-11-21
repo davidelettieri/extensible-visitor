@@ -8,6 +8,11 @@ public sealed record Square(double Length) : IShape;
 
 public sealed record Circle(double Radius) : IShape;
 
+/// <summary>
+/// This type is added later
+/// </summary>
+/// <param name="Shape"></param>
+/// <param name="Point"></param>
 public sealed record TranslatedShape(IShape Shape, Point Point) : IShape;
 
 public static class Tools
