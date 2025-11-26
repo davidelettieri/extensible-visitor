@@ -31,7 +31,7 @@ public sealed record TranslatedShape(IShape Shape, Point Point) : IShape
 
 public class ContainsPoint(Point point) : IShapeProcessor<bool>
 {
-    protected virtual ContainsPoint MakeContainsPoint(Point p) => new(p);
+    protected virtual ContainsPoint MakeContainsPoint(Point p ) => new(p);
 
     public bool ForSquare(Square square) =>
         point.X >= 0 && point.X <= square.Length &&
@@ -47,7 +47,7 @@ public class ContainsPoint(Point point) : IShapeProcessor<bool>
 
 public class UnionContainsPoint(Point point) : ContainsPoint(point), IUnionShapeProcessor<bool>
 {
-    protected override ContainsPoint MakeContainsPoint(Point point) => new UnionContainsPoint(point);
+    protected override ContainsPoint MakeContainsPoint(Point p) => new UnionContainsPoint(p);
 
     public bool ForUnionShape(UnionShape unionShape) =>
         unionShape.Shape1.Process(this) || unionShape.Shape2.Process(this);
